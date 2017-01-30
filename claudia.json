@@ -1,0 +1,7 @@
+{
+  "lambda": {
+    "role": "ui-build-executor",
+    "name": "ui-build",
+    "region": "us-west-2"
+  }
+}

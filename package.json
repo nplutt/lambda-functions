@@ -1,0 +1,16 @@
+{
+  "name": "ui-build",
+  "version": "1.0.0",
+  "description": "Lambda function that is triggered by an s3 bucket, unzips thae file, and pushes each file to a new s3 bucket.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nick Plutt",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.9.0",
+    "stream": "0.0.2",
+    "unzip": "^0.1.11"
+  }
+}
