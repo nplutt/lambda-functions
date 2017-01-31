@@ -9,6 +9,7 @@
   "author": "Nick Plutt",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.1.4",
     "aws-sdk": "^2.9.0",
     "stream": "0.0.2",
     "unzip": "^0.1.11"
