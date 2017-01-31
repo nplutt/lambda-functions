@@ -24,12 +24,12 @@ function getObject() {
             });
         },
         function(data, callback) {
-            fs.writeFile('tmp.zip', data.Body, function(err) {
+            fs.writeFile('./tmp.zip', data.Body, function(err) {
                 callback(err);
             });
         },
         function(callback) {
-            fs.mkdir('tmp', function(err) {
+            fs.mkdir('./tmp', function(err) {
                 callback(err);
             });
         },
