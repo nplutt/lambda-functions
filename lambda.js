@@ -28,21 +28,21 @@ function unzipAndUpload(bucket, key) {
             });
         },
         function(data, callback) {
-            fs.writeFile('./tmp.zip', data.Body, function(err) {
+            fs.writeFile('/tmp/temp.zip', data.Body, function(err) {
                 console.log('Writing the buffer stream to the zip file!');
                 console.log(err);
                 callback(err);
             });
         },
         function(callback) {
-            fs.mkdir('./tmp', function(err) {
+            fs.mkdir('/tmp/temp', function(err) {
                 console.log('Made the tmp directory');
                 console.log(err);
                 callback(err);
             });
         },
         function(callback) {
-            var stream = fs.createReadStream('tmp.zip').pipe(unzip.Extract({ path: 'tmp' }));
+            var stream = fs.createReadStream('/tmp/temp.zip').pipe(unzip.Extract({ path: '/tmp/temp' }));
             stream.on('finish', function(err) {
                 console.log('Unziped the files');
                 console.log(err);
@@ -50,15 +50,16 @@ function unzipAndUpload(bucket, key) {
             });
         },
         function(callback) {
-            fs.readdir('./tmp/dist/', function(err, files) {
+            fs.readdir('/tmp/temp/dist/', function(err, files) {
                 console.log('Getting all of the file names in the dist folder.');
                 console.log(err);
+                console.log(files);
                 callback(err, files);
             });
         },
         function(files, callback) {
             async.each(files, function(fileName, callback) {
-                var file = fs.createReadStream('./tmp/dist/' + fileName);
+                var file = fs.createReadStream('/tmp/temp/dist/' + fileName);
                 var params = {
                     Bucket: bucket,
                     Key: fileName,
@@ -73,5 +74,7 @@ function unzipAndUpload(bucket, key) {
                 callback(err);
             });
         }
-    ]);
+    ], function(err) {
+        context.done(null, '');
+    });
 }
