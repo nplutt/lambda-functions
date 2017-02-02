@@ -8,10 +8,10 @@ var async = require('async');
 exports.handler = function (event, context) {
     var bucket = event.Records[0].s3.bucket.name;
     var key = event.Records[0].s3.object.key;
-    unzipAndUpload(bucket, key);
+    unzipAndUpload(bucket, key, context);
 };
 
-function unzipAndUpload(bucket, key) {
+function unzipAndUpload(bucket, key, context) {
     var params = {
         Key: key,
         Bucket: bucket
@@ -22,38 +22,27 @@ function unzipAndUpload(bucket, key) {
     async.waterfall([
         function(callback) {
             s3.getObject(params, function(err, data) {
-                console.log('Retrieved the object!');
-                console.log(err);
                 callback(err, data);
             });
         },
         function(data, callback) {
             fs.writeFile('/tmp/temp.zip', data.Body, function(err) {
-                console.log('Writing the buffer stream to the zip file!');
-                console.log(err);
                 callback(err);
             });
         },
         function(callback) {
             fs.mkdir('/tmp/temp', function(err) {
-                console.log('Made the tmp directory');
-                console.log(err);
                 callback(err);
             });
         },
         function(callback) {
             var stream = fs.createReadStream('/tmp/temp.zip').pipe(unzip.Extract({ path: '/tmp/temp' }));
             stream.on('finish', function(err) {
-                console.log('Unziped the files');
-                console.log(err);
                 callback(err);
             });
         },
         function(callback) {
             fs.readdir('/tmp/temp/dist/', function(err, files) {
-                console.log('Getting all of the file names in the dist folder.');
-                console.log(err);
-                console.log(files);
                 callback(err, files);
             });
         },
@@ -66,8 +55,6 @@ function unzipAndUpload(bucket, key) {
                     Body: file
                 };
                 s3.putObject(params, function(err, data) {
-                    console.log('Placing the file in s3.');
-                    console.log(err);
                     callback(err);
                 });
             }, function(err) {
