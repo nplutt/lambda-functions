@@ -1,0 +1,7 @@
+version: 0.1
+
+phases:
+    build:
+        commands:
+            - . ./VARIABLES.sh
+            - ./deploy.sh

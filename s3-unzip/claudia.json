@@ -1,7 +1,7 @@
 {
   "lambda": {
-    "role": "ui-build-executor",
-    "name": "ui-build",
+    "role": "s3-unzip-executor",
+    "name": "s3-unzip",
     "region": "us-west-2"
   }
 }
