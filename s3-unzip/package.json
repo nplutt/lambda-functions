@@ -1,5 +1,5 @@
 {
-  "name": "ui-build",
+  "name": "s3-unzip",
   "version": "1.0.0",
   "description": "Lambda function that is triggered by an s3 bucket, unzips thae file, and pushes each file to a new s3 bucket.",
   "main": "index.js",
