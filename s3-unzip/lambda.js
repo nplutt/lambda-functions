@@ -17,8 +17,6 @@ function unzipAndUpload(bucket, key, context) {
         Bucket: bucket
     };
 
-    console.log(params);
-
     async.waterfall([
         function(callback) {
             s3.getObject(params, function(err, data) {
