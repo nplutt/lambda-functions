@@ -18,6 +18,8 @@ function unzipAndUpload(bucket, key, context) {
         Key: key,
         Bucket: bucket
     };
+    var filePath = '/tmp/temp.zip';
+    var folderPath = '/tmp/temp';
 
     async.waterfall([
         function(callback) {
@@ -26,33 +28,48 @@ function unzipAndUpload(bucket, key, context) {
             });
         },
         function(data, callback) {
-            fs.writeFile('/tmp/temp.zip', data.Body, function(err) {
+            fs.writeFile(filePath, data.Body, function(err) {
                 callback(err);
             });
         },
         function(callback) {
-            fs.mkdir('/tmp/temp', function(err) {
+            fs.mkdir(folderPath, function(err) {
                 callback(err);
             });
         },
         function(callback) {
-            var stream = fs.createReadStream('/tmp/temp.zip').pipe(unzip.Extract({ path: '/tmp/temp' }));
+            var stream = fs.createReadStream(filePath).pipe(unzip.Extract({ path: folderPath }));
             stream.on('finish', function(err) {
                 callback(err);
             });
         },
         function(callback) {
-            fs.readdir('/tmp/temp/dist/', function(err, files) {
-                callback(err, files);
+            var walker = walk.walk(folderPath);
+            var files = [];
+            walker.on('file', function(root, fileStats, next) {
+                var filePath = root + fileStats.name;
+                var file = {
+                    'name': fileStats.name,
+                    'path': filePath
+                };
+                files.push(file);
+
+                next();
+            });
+            walker.on('errors', function(root, fileStats, next) {
+                next();
+            });
+            walker.on('end', function(root, fileStats, next) {
+                callback(null, files);
             });
         },
         function(files, callback) {
-            async.each(files, function(fileName, callback) {
-                var file = fs.createReadStream('/tmp/temp/dist/' + fileName);
+            async.each(files, function(file, callback) {
+                var fileData = fs.createReadStream(file.path);
                 var params = {
                     Bucket: process.env.WEB_BUCKET,
-                    Key: fileName,
-                    Body: file
+                    Key: file.name,
+                    Body: fileData
                 };
                 s3.putObject(params, function(err, data) {
                     callback(err);
