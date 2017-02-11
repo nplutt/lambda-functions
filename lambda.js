@@ -4,10 +4,12 @@ var unzip = require('unzip2');
 var util = require('util');
 var fs = require('fs');
 var async = require('async');
+var walk = require('walk');
 
 exports.handler = function (event, context) {
     var bucket = event.Records[0].s3.bucket.name;
     var key = event.Records[0].s3.object.key;
+
     unzipAndUpload(bucket, key, context);
 };
 
@@ -48,7 +50,7 @@ function unzipAndUpload(bucket, key, context) {
             async.each(files, function(fileName, callback) {
                 var file = fs.createReadStream('/tmp/temp/dist/' + fileName);
                 var params = {
-                    Bucket: bucket,
+                    Bucket: process.env.WEB_BUCKET,
                     Key: fileName,
                     Body: file
                 };
