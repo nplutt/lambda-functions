@@ -66,7 +66,7 @@ function unzipAndUpload(bucket, key, context) {
         function(files, callback) {
             async.each(files, function(file, callback) {
                 var fileData = fs.createReadStream(file.path);
-                console.log(process.env.WEB_BUCKET);
+                console.log(file.name);
                 var params = {
                     Bucket: 'npluttwebsite',
                     Key: file.name,
