@@ -49,7 +49,7 @@ function unzipAndUpload(bucket, key, context) {
             var walker = walk.walk(folderPath);
             var files = [];
             walker.on('file', function(root, fileStats, next) {
-                var filePath = root + fileStats.name;
+                var filePath = root + '/' + fileStats.name;
                 var file = {
                     'name': fileStats.name,
                     'path': filePath
