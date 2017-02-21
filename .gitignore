@@ -53,5 +53,5 @@ jspm_packages
 .env
 
 .idea/
-#claudia.json
+claudia.json
 VARIABLES.sh
