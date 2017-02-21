@@ -21,7 +21,7 @@ function unzipAndUpload(bucket, key, context) {
         Bucket: bucket
     };
     var filePath = '4nJGPdD.zip';
-    var folderPath = 'muck';
+    var folderPath = './muck';
 
     async.waterfall([
         // function(callback) {
@@ -67,15 +67,22 @@ function unzipAndUpload(bucket, key, context) {
         },
         function(files, callback) {
             async.each(files, function(file, callback) {
-                var fileData = fs.createReadStream(file.path);
-                console.log(file.name);
-                var params = {
-                    Bucket: 'npluttwebsite',
-                    Key: file.name,
-                    Body: fileData
-                };
-                s3.putObject(params, function(err, data) {
-                    callback(err);
+                var readstream = fs.createReadStream(file.path);
+                var data = '';
+
+                readstream.on('data', function(chunk) {
+                    data += chunk;
+                });
+
+                readstream.on('end', function() {
+                    var params = {
+                        Bucket: 'npluttwebsite',
+                        Key: file.name,
+                        Body: data
+                    };
+                    s3.putObject(params, function(err, data) {
+                        callback(err);
+                    });
                 });
             }, function(err) {
                 callback(err);
