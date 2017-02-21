@@ -65,6 +65,7 @@ function unzipAndUpload(bucket, key, context) {
         },
         function(files, callback) {
             async.each(files, function(file, callback) {
+                console.log(file.path);
                 var fileData = fs.createReadStream(file.path);
                 console.log(file.name);
                 console.log(fileData);
