@@ -39,7 +39,7 @@ function unzipAndUpload(bucket, key, context) {
         },
         function(callback) {
             var stream = fs.createReadStream(filePath).pipe(unzip.Extract({ path: folderPath }));
-            stream.on('finish', function(err) {
+            stream.on('close', function(err) {
                 callback(err);
             });
         },
