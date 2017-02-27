@@ -1,5 +1,6 @@
 {		
-  "lambda": {				
+  "lambda": {
+    "role": "S3UnzipRole"
     "name": "s3-unzip",		
     "region": "us-west-2"		
   }		
