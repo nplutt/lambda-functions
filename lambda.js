@@ -89,6 +89,7 @@ function unzipAndUpload(bucket, key, context) {
             });
         }
     ], function(err) {
+        console.log(err);
         context.done(null, '');
     });
 }

@@ -4,5 +4,5 @@
 npm install
 npm install -g claudia
 claudia destroy --config destroy.json || true
-claudia create --region $REGION --handler lambda.handler --timeout $TIMEOUT --set-env BUCKET_NAME=$BUCKET_NAME
+claudia create --region $REGION --handler lambda.handler --timeout $TIMEOUT --role $LAMBDA_ROLE --set-env BUCKET_NAME=$WEB_BUCKET
 claudia add-s3-event-source --bucket $BUCKET --prefix $PREFIX || true
