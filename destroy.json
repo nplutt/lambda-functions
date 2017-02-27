@@ -1,6 +1,5 @@
 {		
-  "lambda": {		
-    "role": "s3-unzip-executor",		
+  "lambda": {				
     "name": "s3-unzip",		
     "region": "us-west-2"		
   }		
