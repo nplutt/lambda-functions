@@ -68,6 +68,16 @@ function unzipAndUpload(bucket, key, context) {
             async.each(files, function(file, callback) {
                 var readstream = fs.createReadStream(file.path);
                 var data = '';
+                var contentType = '';
+                if(file.name.includes('.html')){
+                    contentType = 'text/html'
+                } else if(file.name.includes('.js')) {
+                    contentType = 'application/javascript'
+                } else if(file.name.includes('.css')) {
+                    contentType = 'text/css'
+                } else {
+                    contentType = 'application/octet-stream'
+                }
 
                 readstream.on('data', function(chunk) {
                     data += chunk;
@@ -77,7 +87,8 @@ function unzipAndUpload(bucket, key, context) {
                     var params = {
                         Bucket: process.env.BUCKET_NAME,
                         Key: file.name,
-                        Body: data
+                        Body: data,
+                        ContentType: contentType
                     };
                     s3.putObject(params, function(err, data) {
                         callback(err);
