@@ -70,13 +70,13 @@ function unzipAndUpload(bucket, key, context) {
                 var data = '';
                 var contentType = '';
                 if(file.name.includes('.html')){
-                    contentType = 'text/html'
+                    contentType = 'text/html';
                 } else if(file.name.includes('.js')) {
-                    contentType = 'application/javascript'
+                    contentType = 'application/javascript';
                 } else if(file.name.includes('.css')) {
-                    contentType = 'text/css'
+                    contentType = 'text/css';
                 } else {
-                    contentType = 'application/octet-stream'
+                    contentType = 'application/octet-stream';
                 }
 
                 readstream.on('data', function(chunk) {
