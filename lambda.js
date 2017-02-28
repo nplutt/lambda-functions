@@ -18,8 +18,9 @@ function unzipAndUpload(bucket, key, context) {
         Key: key,
         Bucket: bucket
     };
-    var filePath = '/tmp/temp.zip';
-    var folderPath = '/tmp/temp';
+    var rand = Math.random().toString(36).substring(14);
+    var filePath = '/tmp/' + rand + '.zip';
+    var folderPath = '/tmp/' + rand;
 
     async.waterfall([
         function(callback) {
