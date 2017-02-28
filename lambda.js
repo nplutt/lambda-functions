@@ -74,10 +74,8 @@ function unzipAndUpload(bucket, key, context) {
                 });
 
                 readstream.on('end', function() {
-                    console.log(file.name);
-                    console.log(process.env.BUCKET_NAME);
                     var params = {
-                        Bucket: 'npluttwebsite',
+                        Bucket: process.env.BUCKET_NAME,
                         Key: file.name,
                         Body: data
                     };
